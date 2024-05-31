@@ -1,0 +1,27 @@
+documentation:
+  version: "1"
+  title: "Points API"
+  description: "API to interact with points loyalty system"
+  servers:
+    url: https://ABC.execute-api.us-east-1.amazonaws.com/dev/
+    description: Base API URL - DEV
+  securitySchemes:
+    Signature:
+      type: apiKey
+      name: Signature
+      in: header
+  security:
+    - Signature: []
+
+  models:
+    - ${file(sls/documentation/models/addPoints/request.yml)}
+    - ${file(sls/documentation/models/addPoints/response.yml)}
+    - ${file(sls/documentation/models/createProject/request.yml)}
+    - ${file(sls/documentation/models/createProject/response.yml)}
+    - ${file(sls/documentation/models/getPoints/request.yml)}
+    - ${file(sls/documentation/models/getPoints/response.yml)}
+
+endpoints:
+  getPoints: ${file(sls/documentation/endpoints/getPoints.yml)}
+  createProject: ${file(sls/documentation/endpoints/createProject.yml)}
+  addPoints: ${file(sls/documentation/endpoints/addPoints.yml)}

@@ -1,0 +1,10 @@
+AddPoints:
+  handler: src/functions/api/addPoints.handler
+  memorySize: 256
+  timeout: 30
+  events:
+    - http:
+        path: points/{address}
+        method: POST
+        cors: true
+        documentation: ${file(sls/documentation/serverless.doc.yml):endpoints.addPoints}

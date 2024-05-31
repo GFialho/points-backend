@@ -1,0 +1,204 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "GetAccountResponse": {
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "nickname": {
+                "type": "string"
+              },
+              "address": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "primaryColor": {
+                "type": "string"
+              },
+              "secondaryColor": {
+                "type": "string"
+              },
+              "textColor": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "UpdateAccountRequest": {
+        "properties": {
+          "nickname": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "primaryColor": {
+            "type": "string"
+          },
+          "secondaryColor": {
+            "type": "string"
+          },
+          "textColor": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        }
+      },
+      "address": {
+        "type": "string"
+      },
+      "Access-Control-Allow-Origin": {
+        "type": "string",
+        "default": "*",
+        "example": "https://developer.mozilla.org"
+      },
+      "Access-Control-Allow-Credentials": {
+        "type": "boolean",
+        "default": true
+      }
+    },
+    "securitySchemes": {
+      "Signature": {
+        "type": "apiKey",
+        "name": "Signature",
+        "in": "header"
+      }
+    }
+  },
+  "info": {
+    "title": "Where is My NFT API",
+    "description": "NFT Gallery api with all main functionalities of the software",
+    "version": "1"
+  },
+  "security": [
+    {
+      "Signature": []
+    }
+  ],
+  "paths": {
+    "/account/{address}": {
+      "get": {
+        "summary": "Get Account",
+        "description": "Get User's account",
+        "operationId": "points-dev-GetAccount",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "The address of the user",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/address"
+            }
+          }
+        ],
+        "tags": ["Account"],
+        "responses": {
+          "200": {
+            "description": "Account response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountResponse"
+                }
+              }
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "The Access-Control-Allow-Origin response header indicates whether the response can be shared with requesting code from the given [origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin). - [MDN Link](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin)",
+                "schema": {
+                  "$ref": "#/components/schemas/Access-Control-Allow-Origin"
+                }
+              },
+              "Access-Control-Allow-Credentials": {
+                "description": "The Access-Control-Allow-Credentials response header tells browsers whether to expose the response to the frontend JavaScript code when the request's credentials mode ([Request.credentials](https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials)) is include. - [MDN Link](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials)",
+                "schema": {
+                  "$ref": "#/components/schemas/Access-Control-Allow-Credentials"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update Account",
+        "description": "Update User's Account",
+        "operationId": "points-dev-UpdateAccount",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "description": "The address of the user",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/address"
+            }
+          }
+        ],
+        "tags": ["Brand"],
+        "requestBody": {
+          "description": "User infos object",
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User updated response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountResponse"
+                }
+              }
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "The Access-Control-Allow-Origin response header indicates whether the response can be shared with requesting code from the given [origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin). - [MDN Link](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin)",
+                "schema": {
+                  "$ref": "#/components/schemas/Access-Control-Allow-Origin"
+                }
+              },
+              "Access-Control-Allow-Credentials": {
+                "description": "The Access-Control-Allow-Credentials response header tells browsers whether to expose the response to the frontend JavaScript code when the request's credentials mode ([Request.credentials](https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials)) is include. - [MDN Link](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials)",
+                "schema": {
+                  "$ref": "#/components/schemas/Access-Control-Allow-Credentials"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://twvwww90y3.execute-api.eu-central-1.amazonaws.com/dev/",
+      "description": "Base API URL - DEV"
+    }
+  ]
+}

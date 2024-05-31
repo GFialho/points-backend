@@ -1,0 +1,23 @@
+summary: Get Points
+tags:
+  - Points
+description: Get points of an address
+pathParams:
+  - name: "address"
+    description: "The address of the user"
+    required: true
+    schema:
+      type: "string"
+queryParams:
+  - name: "eventName"
+    description: "Name of event to filer"
+    required: false
+    schema:
+      type: "string"
+
+methodResponses:
+  - statusCode: 200
+    responseBody:
+      description: Get Points response
+    responseModels:
+      application/json: GetPointsResponse

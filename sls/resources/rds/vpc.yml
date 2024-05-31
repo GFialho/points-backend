@@ -1,0 +1,115 @@
+Resources:
+  # Since RDS is a server, we need to provide a whole architecture behind it!
+  # Database VPC so it can communicate to other services and to keep track of VPCs
+  PointsRDSVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: ${self:custom.postgres.vpcCIDR}.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: RDS VPC with 3 public Subnets
+
+  PointsInternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  PointsAttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: PointsRDSVPC
+      InternetGatewayId:
+        Ref: PointsInternetGateway
+
+  PointsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Allow http client to connect to our database"
+      VpcId:
+        Ref: PointsRDSVPC
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+
+  PointsPublicSubnetA:
+    DependsOn: PointsRDSVPC
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: PointsRDSVPC
+      AvailabilityZone: ${self:provider.region}a
+      CidrBlock: ${self:custom.postgres.vpcCIDR}.0.0.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: RDS Public Subnet AZA
+
+  PointsPublicSubnetB:
+    DependsOn: PointsRDSVPC
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: PointsRDSVPC
+      AvailabilityZone: ${self:provider.region}b
+      CidrBlock: ${self:custom.postgres.vpcCIDR}.0.1.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: RDS Public Subnet AZB
+
+  PointsPublicSubnetC:
+    DependsOn: PointsRDSVPC
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: PointsRDSVPC
+      AvailabilityZone: ${self:provider.region}c
+      CidrBlock: ${self:custom.postgres.vpcCIDR}.0.2.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: RDS Public Subnet AZC
+
+  PointsRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: PointsRDSVPC
+
+  PointsRouteTable1Association:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: PointsPublicSubnetA
+      RouteTableId:
+        Ref: PointsRouteTable
+
+  PointsRouteTable2Association:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: PointsPublicSubnetB
+      RouteTableId:
+        Ref: PointsRouteTable
+
+  PointsRouteTable3Association:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: PointsPublicSubnetC
+      RouteTableId:
+        Ref: PointsRouteTable
+
+  PointsInternetRouteRule:
+    Type: AWS::EC2::Route
+    DependsOn: PointsAttachGateway
+    Properties:
+      RouteTableId:
+        Ref: PointsRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: PointsInternetGateway

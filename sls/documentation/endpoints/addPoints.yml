@@ -1,0 +1,20 @@
+summary: Add Points
+tags:
+  - Points
+description: Add points to an address
+pathParams:
+  - name: "address"
+    description: "The address of the user"
+    required: true
+    schema:
+      type: "string"
+requestBody:
+  description: Points object
+requestModels:
+  application/json: AddPointsRequest
+methodResponses:
+  - statusCode: 200
+    responseBody:
+      description: Points response
+    responseModels:
+      application/json: AddPointsResponse

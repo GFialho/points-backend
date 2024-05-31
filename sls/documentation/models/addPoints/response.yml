@@ -1,0 +1,25 @@
+name: GetAccountResponse
+description: Get Account response body
+contentType: application/json
+schema:
+  $schema: http://json-schema.org/draft-04/schema#
+  properties:
+    user:
+      type: object
+      properties:
+        nickname:
+          type: string
+        address:
+          type: string
+        description:
+          type: string
+        primaryColor:
+          type: string
+        secondaryColor:
+          type: string
+        textColor:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string

@@ -1,0 +1,11 @@
+Resources:
+  Bucket:
+    # Bucket that is going to host our Swagger Doc Website
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:custom.bucketName}
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      PublicAccessBlockConfiguration:
+        BlockPublicPolicy: False

@@ -1,0 +1,10 @@
+GetPoints:
+  handler: src/functions/api/getPoints.handler
+  memorySize: 256
+  timeout: 30
+  events:
+    - http:
+        path: points/{address}
+        method: GET
+        cors: true
+        documentation: ${file(sls/documentation/serverless.doc.yml):endpoints.getPoints}

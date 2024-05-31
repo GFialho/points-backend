@@ -1,0 +1,50 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id   Int    @id @default(autoincrement())
+  user User[]
+  hash String @unique
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  projectId Int
+  address   String
+  updatedAt DateTime  @updatedAt
+  createdAt DateTime  @default(now())
+  history   History[]
+  project   Project   @relation(fields: [projectId], references: [id])
+  balance   Balance[]
+
+  @@unique([projectId, address])
+}
+
+model Balance {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  eventName String
+  amount    Float @default(0)
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+    @@unique([userId, eventName])
+
+}
+
+model History {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  eventName     String
+  points    Float
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}

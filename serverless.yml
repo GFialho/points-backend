@@ -1,0 +1,84 @@
+service: points
+
+plugins:
+  - serverless-openapi-documenter
+  # Plugin responsible for translating typescript to javascript
+  - serverless-esbuild
+  # Plugin responsible for deleting past lambda version
+  - serverless-prune-plugin
+  # Plugin for running the server locally and testing
+  - serverless-offline
+
+package:
+  individually: true
+  exclude:
+    - .serverless/**
+    - .git/**
+  include:
+    - "!node_modules/.prisma/client/libquery_engine-*"
+    - "node_modules/.prisma/client/libquery_engine-rhel-*"
+    - "!node_modules/prisma/libquery_engine-*"
+    - "!node_modules/@prisma/engines/**"
+    - "node_modules/.prisma/client/schema.prisma"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${self:custom.stage}
+  region: us-east-1
+  environment:
+    STAGE: ${self:custom.stage}
+    DATABASE_URL: postgresql://${self:custom.postgres.username}:${self:custom.postgres.password}@${self:custom.postgres.host}:5432/${self:custom.postgres.dbName}
+    databaseUser: ${self:custom.postgres.username}
+    databaseName: ${self:custom.postgres.dbName}
+    databasePassword: ${self:custom.postgres.password}
+    databaseHost: ${self:custom.postgres.host}
+  stackTags:
+    service: points-backend
+
+custom:
+  esbuild:
+    target: "node18"
+    bundle: true
+    minify: false
+    packagerOptions:
+      scripts:
+        - npx prisma generate
+  documentation: ${file(sls/documentation/serverless.doc.yml):documentation}
+
+  stage: ${opt:stage, 'dev'}
+  prune:
+    automatic: true
+    number: 1
+  postgres:
+    dbName: postgres
+    username: postgres
+    password: ${ssm:${self:custom.rdsSecretName}}
+    maxConnections:
+      dev: 100
+    dbInstanceClass:
+      dev: db.t4g.micro
+    allocatedStorage:
+      dev: "20"
+    vpcCIDR: 10
+    host: ${ssm:${self:custom.rdsHostSecretPath}}
+  rdsSecretName: /rds/password
+  rdsHostSecretPath: /rds/host-${self:custom.stage}
+  bucketName: points-swagger-${self:custom.stage}
+
+functions:
+  - ${file(sls/functions/api/addPoints.yml)}
+  - ${file(sls/functions/api/createProject.yml)}
+  - ${file(sls/functions/api/getPoints.yml)}
+
+resources:
+  # RDS
+  - ${file(sls/resources/rds/database.yml)}
+  - ${file(sls/resources/rds/vpc.yml)}
+  # PARAMETER STORE
+  - ${file(sls/resources/parameter/database.yml)}
+  # S3
+  - ${file(sls/resources/s3/bucketPolicy.yml)}
+  - ${file(sls/resources/s3/swaggerBucket.yml)}
+  # API GATEWAY
+  - ${file(sls/resources/apiGateway/response.yml)}

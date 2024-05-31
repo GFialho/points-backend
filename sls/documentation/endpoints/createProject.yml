@@ -1,0 +1,14 @@
+summary: Create Project
+tags:
+  - Project
+description: Create a Project
+requestBody:
+  description: Project object
+requestModels:
+  application/json: CreateProjectRequest
+methodResponses:
+  - statusCode: 200
+    responseBody:
+      description: Project response
+    responseModels:
+      application/json: CreateProjectResponse

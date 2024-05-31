@@ -1,0 +1,14 @@
+Resources:
+  DatabaseSecret:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /rds/password
+      Type: String
+      Value: insert-value-on-aws-console
+
+  DatabaseHost:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /rds/host-${self:custom.stage}
+      Type: String
+      Value: insert-value-on-aws-console

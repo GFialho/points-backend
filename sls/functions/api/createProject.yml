@@ -1,0 +1,10 @@
+CreateProject:
+  handler: src/functions/api/createProject.handler
+  memorySize: 256
+  timeout: 30
+  events:
+    - http:
+        path: project/
+        method: POST
+        cors: true
+        documentation: ${file(sls/documentation/serverless.doc.yml):endpoints.createProject}
