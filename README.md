@@ -1,6 +1,7 @@
 # Points Service
 
 This project is a serverless application for managing points, built using TypeScript and the AWS Serverless framework. Below is an overview of the resources utilized and their purposes.
+The API documentation can be fount at: http://points-swagger-dev.s3-website-us-east-1.amazonaws.com/#
 
 ## Prerequisites
 
@@ -55,6 +56,8 @@ S3 is utilized for storing and serving static assets, such as OpenAPI documentat
 
 - `swaggerBucket.yml`: Configures an S3 bucket for storing the Swagger API documentation.
 - `bucketPolicy.yml`: Defines the access policies for the S3 bucket to ensure that only authorized users can access the stored documents.
+
+The website can be found at: http://points-swagger-dev.s3-website-us-east-1.amazonaws.com/#
 
 ### API Gateway
 
