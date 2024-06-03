@@ -14,8 +14,7 @@ export const handler = async (
   const prisma = getConnection();
 
   const project = await prisma.project.findUnique({ where: { hash } });
-  const methodArn = event.methodArn;
-
+  console.log(prisma.project);
   console.log({ hash, project });
 
   if (!project)
@@ -27,7 +26,7 @@ export const handler = async (
           {
             Action: "execute-api:Invoke",
             Effect: "Deny",
-            Resource: methodArn,
+            Resource: "*",
           },
         ],
       },
@@ -42,7 +41,7 @@ export const handler = async (
         {
           Action: "execute-api:Invoke",
           Effect: "Allow",
-          Resource: methodArn,
+          Resource: "*",
         },
       ],
     },

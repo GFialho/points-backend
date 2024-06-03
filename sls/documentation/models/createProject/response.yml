@@ -4,10 +4,7 @@ contentType: application/json
 schema:
   $schema: http://json-schema.org/draft-04/schema#
   properties:
-    user:
-      type: object
-      properties:
-        id:
-          type: string
-        apiKey:
-          type: string
+    id:
+      type: string
+    apiKey:
+      type: string

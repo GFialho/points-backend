@@ -3,10 +3,11 @@ import { apiResponse } from "../../utils/api";
 import { getConnection } from "../../utils/database";
 
 export const handler = async (event: APIGatewayEvent) => {
-  const { eventName, address } = event.queryStringParameters as unknown as {
+  const { eventName } = event.queryStringParameters as unknown as {
     address: string;
     eventName?: string;
   };
+  const { address } = event.pathParameters as unknown as { address: string };
 
   if (!address) return apiResponse(401, { message: "Address is required" });
 
@@ -18,7 +19,7 @@ export const handler = async (event: APIGatewayEvent) => {
     where: { projectId_address: { projectId, address } },
   });
 
-  if (!user) return apiResponse(404, { message: "Address not found" });
+  if (!user) return apiResponse(200, { balance: 0 });
 
   let totalUserBalance: number | undefined | null;
 
@@ -36,5 +37,5 @@ export const handler = async (event: APIGatewayEvent) => {
     totalUserBalance = balance?._sum?.amount;
   }
 
-  return apiResponse(201, { balance: totalUserBalance || 0 });
+  return apiResponse(200, { balance: totalUserBalance || 0 });
 };

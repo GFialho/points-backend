@@ -23,6 +23,7 @@ jobs:
           export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
           export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
           sudo npm i -g serverless@3.6.0
+          npm run test
           sls deploy -s dev --verbose
           sls openapi generate
           aws s3api put-object --bucket points-swagger-dev --key apis/points --content-type "application/json" --body openapi.json --debug

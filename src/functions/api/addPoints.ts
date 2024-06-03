@@ -6,7 +6,8 @@ export const handler = async (event: APIGatewayEvent) => {
   if (!event.body)
     return apiResponse(401, { message: "Missing Body in the Request" });
 
-  const { points, address, eventName } = JSON.parse(event.body);
+  const { points, eventName } = JSON.parse(event.body);
+  const { address } = event.pathParameters as unknown as { address: string };
 
   if (!points) return apiResponse(401, { message: "Points is required" });
 
@@ -16,7 +17,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
   const user = await prisma.user.findUnique({
     where: { projectId_address: { projectId, address } },
-    include: { balance: true },
+    include: { balance: { where: { eventName } } },
   });
 
   if (!user) {
@@ -30,9 +31,10 @@ export const handler = async (event: APIGatewayEvent) => {
     return apiResponse(200, { balance: points });
   }
 
-  await prisma.balance.update({
+  await prisma.balance.upsert({
     where: { userId_eventName: { userId: user.id, eventName } },
-    data: { amount: { increment: points } },
+    create: { amount: points, eventName, userId: user.id },
+    update: { amount: { increment: points } },
   });
 
   const totalUserBalance = await prisma.balance.aggregate({
