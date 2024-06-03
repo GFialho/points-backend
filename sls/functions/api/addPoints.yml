@@ -8,3 +8,4 @@ AddPoints:
         method: POST
         cors: true
         documentation: ${file(sls/documentation/serverless.doc.yml):endpoints.addPoints}
+        authorizer: Authorizer

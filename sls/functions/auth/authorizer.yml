@@ -1,0 +1,4 @@
+Authorizer:
+  handler: src/functions/auth/authorizer.handler
+  memorySize: 256
+  timeout: 30

@@ -16,6 +16,8 @@ export const handler = async (
   const project = await prisma.project.findUnique({ where: { hash } });
   const methodArn = event.methodArn;
 
+  console.log({ hash, project });
+
   if (!project)
     return {
       principalId: "user",

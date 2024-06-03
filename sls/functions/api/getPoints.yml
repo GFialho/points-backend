@@ -8,3 +8,4 @@ GetPoints:
         method: GET
         cors: true
         documentation: ${file(sls/documentation/serverless.doc.yml):endpoints.getPoints}
+        authorizer: Authorizer

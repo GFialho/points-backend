@@ -1,27 +1,14 @@
-name: UpdateAccountRequest
-description: Update account request body
+name: GetPointsRequest
+description: Get points request body
 contentType: application/json
 schema:
-  $schema: http://json-schema.org/draft-04/schema#
-  properties:
-    nickname:
-      type: string
-    address:
-      type: string
-    description:
-      type: string
-    primaryColor:
-      type: string
-    secondaryColor:
-      type: string
-    textColor:
-      type: string
-    createdAt:
-      type: string
-    updatedAt:
-      type: string
+  pathParams:
+    - name: "usernameId"
+      description: "The usernameId parameter"
+      schema:
+        type: "string"
 requestHeaders:
-  - name: "Signature"
-    description: "User's Signature"
+  - name: "Authorization"
+    description: "Api key"
     schema:
       type: "string"

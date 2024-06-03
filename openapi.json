@@ -2,64 +2,53 @@
   "openapi": "3.0.0",
   "components": {
     "schemas": {
-      "GetAccountResponse": {
+      "AddPointsRequest": {
+        "properties": {
+          "points": {
+            "type": "string"
+          },
+          "eventName": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          }
+        }
+      },
+      "AddPointsResponse": {
+        "properties": {
+          "balance": {
+            "type": "number"
+          }
+        }
+      },
+      "CreateProjectRequest": {
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateProjectResponse": {
         "properties": {
           "user": {
             "type": "object",
             "properties": {
-              "nickname": {
+              "id": {
                 "type": "string"
               },
-              "address": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string"
-              },
-              "primaryColor": {
-                "type": "string"
-              },
-              "secondaryColor": {
-                "type": "string"
-              },
-              "textColor": {
-                "type": "string"
-              },
-              "createdAt": {
-                "type": "string"
-              },
-              "updatedAt": {
+              "apiKey": {
                 "type": "string"
               }
             }
           }
         }
       },
-      "UpdateAccountRequest": {
+      "GetPointsRequest": {},
+      "GetPointsResponse": {
         "properties": {
-          "nickname": {
-            "type": "string"
-          },
-          "address": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "primaryColor": {
-            "type": "string"
-          },
-          "secondaryColor": {
-            "type": "string"
-          },
-          "textColor": {
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string"
+          "balance": {
+            "type": "number"
           }
         }
       },
@@ -74,6 +63,9 @@
       "Access-Control-Allow-Credentials": {
         "type": "boolean",
         "default": true
+      },
+      "eventName": {
+        "type": "string"
       }
     },
     "securitySchemes": {
@@ -85,8 +77,8 @@
     }
   },
   "info": {
-    "title": "Where is My NFT API",
-    "description": "NFT Gallery api with all main functionalities of the software",
+    "title": "Points API",
+    "description": "API to interact with points loyalty system",
     "version": "1"
   },
   "security": [
@@ -95,11 +87,11 @@
     }
   ],
   "paths": {
-    "/account/{address}": {
-      "get": {
-        "summary": "Get Account",
-        "description": "Get User's account",
-        "operationId": "points-dev-GetAccount",
+    "/points/{address}": {
+      "post": {
+        "summary": "Add Points",
+        "description": "Add points to an address",
+        "operationId": "points-dev-AddPoints",
         "parameters": [
           {
             "name": "address",
@@ -111,14 +103,27 @@
             }
           }
         ],
-        "tags": ["Account"],
+        "tags": [
+          "Points"
+        ],
+        "requestBody": {
+          "description": "Points object",
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPointsRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Account response",
+            "description": "Points response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetAccountResponse"
+                  "$ref": "#/components/schemas/AddPointsResponse"
                 }
               }
             },
@@ -139,10 +144,10 @@
           }
         }
       },
-      "patch": {
-        "summary": "Update Account",
-        "description": "Update User's Account",
-        "operationId": "points-dev-UpdateAccount",
+      "get": {
+        "summary": "Get Points",
+        "description": "Get points of an address",
+        "operationId": "points-dev-GetPoints",
         "parameters": [
           {
             "name": "address",
@@ -152,27 +157,75 @@
             "schema": {
               "$ref": "#/components/schemas/address"
             }
+          },
+          {
+            "name": "eventName",
+            "in": "query",
+            "description": "Name of event to filer",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/eventName"
+            }
           }
         ],
-        "tags": ["Brand"],
+        "tags": [
+          "Points"
+        ],
+        "responses": {
+          "200": {
+            "description": "Get Points response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPointsResponse"
+                }
+              }
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "The Access-Control-Allow-Origin response header indicates whether the response can be shared with requesting code from the given [origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin). - [MDN Link](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin)",
+                "schema": {
+                  "$ref": "#/components/schemas/Access-Control-Allow-Origin"
+                }
+              },
+              "Access-Control-Allow-Credentials": {
+                "description": "The Access-Control-Allow-Credentials response header tells browsers whether to expose the response to the frontend JavaScript code when the request's credentials mode ([Request.credentials](https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials)) is include. - [MDN Link](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials)",
+                "schema": {
+                  "$ref": "#/components/schemas/Access-Control-Allow-Credentials"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project/": {
+      "post": {
+        "summary": "Create Project",
+        "description": "Create a Project",
+        "operationId": "points-dev-CreateProject",
+        "parameters": [],
+        "tags": [
+          "Project"
+        ],
         "requestBody": {
-          "description": "User infos object",
+          "description": "Project object",
           "required": false,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateAccountRequest"
+                "$ref": "#/components/schemas/CreateProjectRequest"
               }
             }
           }
         },
         "responses": {
-          "201": {
-            "description": "User updated response",
+          "200": {
+            "description": "Project response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetAccountResponse"
+                  "$ref": "#/components/schemas/CreateProjectResponse"
                 }
               }
             },
@@ -197,7 +250,7 @@
   },
   "servers": [
     {
-      "url": "https://twvwww90y3.execute-api.eu-central-1.amazonaws.com/dev/",
+      "url": "https://ABC.execute-api.us-east-1.amazonaws.com/dev/",
       "description": "Base API URL - DEV"
     }
   ]

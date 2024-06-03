@@ -9,15 +9,15 @@ datasource db {
 }
 
 model Project {
-  id   Int    @id @default(autoincrement())
+  id   String @id @default(cuid())
   user User[]
   hash String @unique
 }
 
 model User {
   id        Int       @id @default(autoincrement())
-  projectId Int
-  address   String
+  projectId String
+  address   String 
   updatedAt DateTime  @updatedAt
   createdAt DateTime  @default(now())
   history   History[]
@@ -31,19 +31,18 @@ model Balance {
   id        Int      @id @default(autoincrement())
   userId    Int
   eventName String
-  amount    Float @default(0)
+  amount    Float    @default(0)
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
 
-    @@unique([userId, eventName])
-
+  @@unique([userId, eventName])
 }
 
 model History {
   id        Int      @id @default(autoincrement())
   userId    Int
-  eventName     String
+  eventName String
   points    Float
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])

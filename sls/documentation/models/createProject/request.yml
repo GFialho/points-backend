@@ -1,27 +1,8 @@
-name: UpdateAccountRequest
-description: Update account request body
+name: CreateProjectRequest
+description: Create project request body
 contentType: application/json
 schema:
   $schema: http://json-schema.org/draft-04/schema#
   properties:
-    nickname:
+    id:
       type: string
-    address:
-      type: string
-    description:
-      type: string
-    primaryColor:
-      type: string
-    secondaryColor:
-      type: string
-    textColor:
-      type: string
-    createdAt:
-      type: string
-    updatedAt:
-      type: string
-requestHeaders:
-  - name: "Signature"
-    description: "User's Signature"
-    schema:
-      type: "string"

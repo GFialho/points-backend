@@ -70,6 +70,7 @@ functions:
   - ${file(sls/functions/api/addPoints.yml)}
   - ${file(sls/functions/api/createProject.yml)}
   - ${file(sls/functions/api/getPoints.yml)}
+  - ${file(sls/functions/auth/authorizer.yml)}
 
 resources:
   # RDS

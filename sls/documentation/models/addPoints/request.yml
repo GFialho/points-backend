@@ -1,27 +1,17 @@
-name: UpdateAccountRequest
-description: Update account request body
+name: AddPointsRequest
+description: Add points to an address
 contentType: application/json
 schema:
   $schema: http://json-schema.org/draft-04/schema#
   properties:
-    nickname:
+    points:
       type: string
-    address:
+    eventName:
       type: string
-    description:
-      type: string
-    primaryColor:
-      type: string
-    secondaryColor:
-      type: string
-    textColor:
-      type: string
-    createdAt:
-      type: string
-    updatedAt:
-      type: string
+    amount:
+      type: number
 requestHeaders:
-  - name: "Signature"
-    description: "User's Signature"
+  - name: "Authorization"
+    description: "Api key"
     schema:
       type: "string"
